@@ -33,7 +33,7 @@ this app uses local `sqlite` database seperate for both dev server and productio
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/<your-username>/<your-repo>.git
+git clone https://github.com/mroman7/notes-app-desktop.git
 cd notepad
 ```
 
