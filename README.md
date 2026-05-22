@@ -1,36 +1,93 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Notepad
 
-## Getting Started
+A modern local note-taking and project workspace built with Next.js, React, Tailwind CSS and Tauri.
 
-First, run the development server:
+## About
+
+`notepad` is a desktop-first note and project management app with rich editor support and a lightweight local database. It includes note pages, project and task organization, a kanban-style workspace, theme support, and a native Tauri wrapper for cross-platform desktop deployment.
+
+## Features
+
+- Next.js + React frontend
+- Markdown/editor support
+- Notes, projects, and task management
+- Kanban-style board interface
+- Light/dark theme support
+- Local SQLite database for persistent storage
+- Tauri support for desktop builds
+
+## Requirements
+
+- Node.js 20+ (or a compatible Node 20 runtime)
+- npm
+- Rust toolchain for Tauri desktop builds
+- `sqlite3` CLI if you want to initialize the local database manually with `npm run init-db`
+
+## Installation
+
+1. Clone the repository:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/<your-username>/<your-repo>.git
+cd notepad
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install dependencies:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+bun install
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+# install tauri dependencies
+cd src-tauri
+cargo build
+```
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+3. (Optional) Manually Initialize the local database:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+bun run init-db
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+## Running the desktop app with Tauri
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+To run the Tauri desktop wrapper in development:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+bun tauri dev
+```
+
+## Build for production
+
+### Web app
+
+```bash
+npm run build
+```
+
+### Tauri desktop bundle
+
+Use the standard Tauri build command after installing the Rust toolchain:
+
+```bash
+npm run tauri build
+```
+
+## Project structure
+
+- `src/app/` - application routes and page layout
+- `src/components/` - reusable UI components and editor modules
+- `src/hooks/` - custom React hooks
+- `src/lib/` - utilities and platform helpers
+- `src-tauri/` - Tauri native layer and Rust backend
+- `scripts/init-db.js` - database initialization script
+
+## Notes
+
+- This repository is configured for a Tauri desktop experience, but can also run as a regular Next.js web app.
+- If `npm run init-db` fails, ensure the `sqlite3` command is installed and available in your PATH.
+
+## License
+
+This repository is ready for open-source publishing. Add a license file if required.
