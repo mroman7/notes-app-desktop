@@ -19,7 +19,7 @@ export default function RootLayout({
       lang="en"
       className={`h-full antialiased font-sans`}
     >
-      <body className="min-h-full">
+      <body>
         <ThemeProvider>
           <HomeLayout>
             {children}

@@ -2,12 +2,12 @@
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "notepad",
   "version": "0.1.0",
-  "identifier": "com.zerox.notepad",
+  "identifier": "com.roman.notepad",
   "build": {
     "frontendDist": "../out",
     "devUrl": "http://localhost:3000",
-    "beforeDevCommand": "bun dev",
-    "beforeBuildCommand": "bun next build"
+    "beforeDevCommand": "bun run dev",
+    "beforeBuildCommand": "bun run build"
   },
   "app": {
     "windows": [

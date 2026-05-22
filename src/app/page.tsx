@@ -4,6 +4,8 @@ import { Toast } from "@/components/ui/toast";
 import { Button } from "@/components/ui/button";
 import { getNoteById, saveNote, deleteNote } from "@/lib/tauri";
 import dynamic from "next/dynamic";
+import { DynamicIcon } from "lucide-react/dynamic";
+import { cn } from "@/lib/utils";
 
 const TextEditor = dynamic(() => import("@/components/text-editor/text-editor"), { ssr: false });
 
@@ -119,20 +121,22 @@ export default function Home() {
   }, [dirty]);
 
   return (
-    <div className="w-full px-4 pt-4">
-      {noteId ? (
-        <div className="mb-4 flex justify-end">
-          <Button variant="destructive" onClick={handleDeleteNote}>
+    <div className="w-full">
+
+      <div className="px-4 h-screen overflow-auto">
+        <TextEditor 
+          key={noteId ?? "new"} 
+          content={content} 
+          onContentChange={handleContentChange} 
+        />
+      </div>
+
+        <div className="bg-accent flex justify-end gap-4 fixed bottom-0 w-[calc(100vw-80px)] py-2 px-2">      
+          
+          <Button variant="destructive" size="sm" className={cn(noteId ? "visible" : "invisible")} onClick={handleDeleteNote}>
             Delete note
           </Button>
         </div>
-      ) : null}
-      <TextEditor 
-        key={noteId ?? "new"} 
-        content={content} 
-        onContentChange={handleContentChange} 
-      />
-
       <Toast
         open={saved}
         message={toastMessage}

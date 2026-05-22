@@ -15,14 +15,14 @@ import { DynamicIcon, IconName } from "lucide-react/dynamic";
 
 const navItems: { label: string; icon: IconName; href: string }[] = [
   { label: "Notes", icon: "notepad-text", href: "/notes" },
-  { label: "Projects", icon: "list-todo", href: "/projects" },
+  // { label: "Projects", icon: "list-todo", href: "/projects" },
 ];
 
 export function Sidebar() {
   const [searchOpen, setSearchOpen] = useState(false);
 
   return (
-    <aside className="flex h-screen w-20 flex-col items-center gap-3 border-r border-border bg-sidebar px-2 py-4 text-sidebar-foreground">
+    <aside className="flex h-screen w-20 flex-col items-center gap-3 border-r border-border bg-sidebar px-2 py-4 text-sidebar-foreground sticky top-0 left-0">
       <TooltipProvider delayDuration={150}>
         <div className="flex flex-col items-center gap-y-8">
           {navItems.map(({ label, icon: Icon, href }) => (

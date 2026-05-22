@@ -1,10 +1,17 @@
+use tauri::Manager;
+
 mod db;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
   tauri::Builder::default()
     .setup(|app| {
-      db::init();
+      // 1. Initialize DB with the app handle context
+      let db_state = db::init(app.handle());
+      
+      // 2. Register the state into Tauri's state management
+      app.manage(db_state);
+
       if cfg!(debug_assertions) {
         app.handle().plugin(
           tauri_plugin_log::Builder::default()

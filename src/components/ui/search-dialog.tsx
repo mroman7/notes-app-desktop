@@ -15,7 +15,7 @@ import { FileText, LayoutDashboard, Home } from "lucide-react";
 const searchItems = [
   { id: "home", label: "Home", icon: Home, path: "/" },
   { id: "notes", label: "Notes", icon: FileText, path: "/notes" },
-  { id: "projects", label: "Projects", icon: LayoutDashboard, path: "/projects" },
+  // { id: "projects", label: "Projects", icon: LayoutDashboard, path: "/projects" },
 ];
 
 export function SearchDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (open: boolean) => void }) {

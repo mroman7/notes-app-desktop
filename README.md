@@ -23,6 +23,11 @@ A modern local note-taking and project workspace built with Next.js, React, Tail
 - Rust toolchain for Tauri desktop builds
 - `sqlite3` CLI if you want to initialize the local database manually with `npm run init-db`
 
+### Note: 
+this app uses local `sqlite` database seperate for both dev server and production. 
+- for Production 
+
+
 ## Installation
 
 1. Clone the repository:
@@ -43,13 +48,6 @@ cargo build
 ```
 
 
-3. (Optional) Manually Initialize the local database:
-
-```bash
-bun run init-db
-```
-
-
 ## Running the desktop app with Tauri
 
 To run the Tauri desktop wrapper in development:
@@ -60,19 +58,18 @@ bun tauri dev
 
 ## Build for production
 
-### Web app
-
-```bash
-npm run build
-```
-
 ### Tauri desktop bundle
-
 Use the standard Tauri build command after installing the Rust toolchain:
 
-```bash
-npm run tauri build
-```
+`bun run tauri build`
+
+### Note: 
+By default it creates a linux (.deb) file on build. In order to build this app installable/executeable for your OS, you need to change value of `"targets": "deb"` in `src-tauri/tauri.conf.json` file.
+
+Bundled file can be found at `src-tauri/target/release/bundle/`
+for example for `.deb`, it is `src-tauri/target/release/bundle/deb/notepad_0.1.0_amd64.deb`
+
+
 
 ## Project structure
 
@@ -81,13 +78,4 @@ npm run tauri build
 - `src/hooks/` - custom React hooks
 - `src/lib/` - utilities and platform helpers
 - `src-tauri/` - Tauri native layer and Rust backend
-- `scripts/init-db.js` - database initialization script
 
-## Notes
-
-- This repository is configured for a Tauri desktop experience, but can also run as a regular Next.js web app.
-- If `npm run init-db` fails, ensure the `sqlite3` command is installed and available in your PATH.
-
-## License
-
-This repository is ready for open-source publishing. Add a license file if required.
