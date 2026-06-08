@@ -1,8 +1,8 @@
 [package]
-name = "app"
+name = "Notepad Local"
 version = "0.1.0"
-description = "A Tauri App"
-authors = ["you"]
+description = "Local Notes Taking app "
+authors = ["Roman Tufail"]
 license = ""
 repository = ""
 edition = "2021"
