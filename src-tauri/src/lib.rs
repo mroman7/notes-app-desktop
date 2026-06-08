@@ -25,14 +25,8 @@ pub fn run() {
       db::get_all_notes,
       db::get_note_by_id,
       db::delete_note,
-      db::save_note,
-      db::get_all_projects,
-      db::get_tasks_for_project,
-      db::update_task_status,
-      db::create_project,
-      db::create_task,
-      db::update_task,
-      db::delete_task,
+      db::create_note,
+      db::update_note,
     ])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");

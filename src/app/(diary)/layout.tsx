@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
-import "./globals.css";
-import { ThemeProvider } from "@/provider/theme-provider";
-import HomeLayout from "@/layouts/home-layout";
+import "../globals.css";
 
 
 export const metadata: Metadata = {
@@ -20,11 +18,7 @@ export default function RootLayout({
       className={`h-full antialiased font-sans`}
     >
       <body>
-        <ThemeProvider>
-          <HomeLayout>
-            {children}
-          </HomeLayout>
-        </ThemeProvider>
+        {children}
       </body>
     </html>
   );
