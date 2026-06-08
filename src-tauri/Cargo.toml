@@ -1,5 +1,5 @@
 [package]
-name = "Notepad Local"
+name = "Notepad"
 version = "0.1.0"
 description = "Local Notes Taking app "
 authors = ["Roman Tufail"]
