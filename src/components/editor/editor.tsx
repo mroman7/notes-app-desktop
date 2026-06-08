@@ -96,7 +96,7 @@ export default function TextEditor({ defaultValue, onContentChange }: TextEditor
   if (!editor) return null;
   
   return (
-    <div className='h-full overflow-auto'>      
+    <div className='h-full w-full overflow-auto'>      
 
       {
         editor && 

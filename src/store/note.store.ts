@@ -9,7 +9,7 @@ interface NoteState {
   // Actions
   fetchNotes: () => Promise<void>;
   setSelectedNoteId: (id: number | null) => void;
-  addNote: (title: string, content?: string) => Promise<void>;
+  addNote: (title: string, content?: string) => Promise<Note>;
   editNote: (id: number, title?: string, content?: string) => Promise<void>;
   removeNote: (id: number) => Promise<void>;
 }
@@ -27,9 +27,11 @@ export const useNoteStore = create<NoteState>((set, get) => ({
 
   setSelectedNoteId: (id) => set({ selectedNoteId: id }),
 
-  addNote: async (title, content) => {
+  addNote: async (title, content): Promise<Note> => {
     const newNote = await createNote(title, content);
-    set((state) => ({ notes: [newNote, ...state.notes] }));
+    set((state) => ({ notes: [newNote, ...state.notes] }));    
+    set(() => ({ selectedNoteId: newNote?.id || null }))
+    return newNote;
   },
 
   editNote: async (id, title, content) => {

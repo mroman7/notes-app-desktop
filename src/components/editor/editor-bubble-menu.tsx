@@ -12,7 +12,7 @@ interface EditorBubbleMenuProps {
 export default function EditorBubbleMenu({ editor }: EditorBubbleMenuProps) {
 
   const { isBold, isItalic, isStrikethrough } = useEditorState({
-    editor, 
+    editor,
     selector: ctx => ({
       isBold: ctx.editor.isActive("bold"),
       isItalic: ctx.editor.isActive('italic'),
@@ -25,26 +25,40 @@ export default function EditorBubbleMenu({ editor }: EditorBubbleMenuProps) {
       <div className="flex items-center gap-2">
         <Button
           size={"icon-xs"}
+          variant={"ghost"}
           onClick={() => editor.chain().focus().toggleBold().run()}
           className={isBold ? 'is-active' : ''}
           type="button"
         >
           <DynamicIcon name='bold' className='size-3' />
         </Button>
-        <button
+        <Button
+          variant={"ghost"}
           onClick={() => editor.chain().focus().toggleItalic().run()}
           className={isItalic ? 'is-active' : ''}
           type="button"
+          size="icon-xs"
         >
-          Italic
-        </button>
-        <button
+          <DynamicIcon name='italic' className='size-3' />
+        </Button>
+        <Button
+          variant={"ghost"}
+          onClick={() => editor.chain().focus().toggleUnderline().run()}
+          className={isItalic ? 'is-active' : ''}
+          type="button"
+          size="icon-xs"
+        >
+          <DynamicIcon name='underline' className='size-3' />
+        </Button>
+        <Button
+          variant={"ghost"}
           onClick={() => editor.chain().focus().toggleStrike().run()}
           className={isStrikethrough ? 'is-active' : ''}
           type="button"
+          size={"icon-xs"}
         >
-          Strike
-        </button>
+          <DynamicIcon name='strikethrough' className='size-3' />
+        </Button>
       </div>
     </BubbleMenu>
   )

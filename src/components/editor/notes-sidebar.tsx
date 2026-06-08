@@ -48,20 +48,20 @@ export function NotesSidebar() {
     };
 
     return (
-        <aside className="w-56 bg-white h-screen border-r border-border bg-surface py-2 px-2 sticky top-0 left-0 flex flex-col">
-            <div className="flex flex-col px-2 py-3 space-y-2">
-                <h3 className="text-lg font-bold">All Notes</h3>
-                <Button
-                    variant="default"
-                    onClick={createNewNote}
-                    className="font-medium text-base text-black gap-2"
-                >
-                    <DynamicIcon name="plus" className="size-4" />
-                    add Note
-                </Button>
-            </div>
-
-            <div className="flex-1 overflow-y-auto">
+        <aside className="w-60 bg-neutral-100 h-screen border-r border-border bg-surface py-2 px-2 sticky top-0 left-0 flex flex-col">
+            
+            <Button
+                variant="outline"
+                onClick={createNewNote}
+                className="font-medium text-base text-black gap-2 mt-4"
+            >
+                <DynamicIcon name="plus" className="size-4" />
+                Add Note
+            </Button>
+            
+            <div className="block my-6" />
+            <h3 className="text-xs text-neutral-500 tracking-widest uppercase font-normal">All Notes</h3>
+            <div className="flex-1 overflow-y-auto mt-2">
                 {isLoading && (
                     <div className="w-full flex items-center justify-center p-2">
                         <DynamicIcon name="loader-2" className="size-2.5 animate-spin" />
@@ -69,10 +69,10 @@ export function NotesSidebar() {
                 )}
 
                 {!isLoading && notes.length === 0 && (
-                    <div className="p-4 text-sm text-muted-foreground">No notes</div>
+                    <div className="py-4 text-center text-sm text-muted-foreground">No notes</div>
                 )}
 
-                <ul className="">
+                <ul className="w-full">
                     {!isLoading && notes.map((n) => (
                         <li
                             key={n.id}
@@ -81,8 +81,8 @@ export function NotesSidebar() {
                                 console.log("Selected Note ID: ", n.id)
                             }}
                             className={cn(
-                                "group cursor-pointer hover:bg-muted py-1.5 px-2 flex items-center justify-between rounded-md",
-                                n.id === selectedNoteId && "bg-muted"
+                                "group cursor-pointer hover:bg-neutral-200 py-1.5 px-2 flex items-center justify-between rounded-md",
+                                n.id === selectedNoteId && "bg-neutral-200"
                             )}
                         >
                             <p className="text-sm font-medium text-gray-800">{n.title}</p>

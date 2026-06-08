@@ -9,7 +9,7 @@ export default function WritePage() {
 
 
   return (
-    <section className='bg-blue-100 min-h-screen'>
+    <section className='bg-neutral-50 min-h-screen'>
         <article className="flex flex-rows items-start">          
           <NotesSidebar />
           <EditorClient />
