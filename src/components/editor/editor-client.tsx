@@ -14,6 +14,10 @@ import {
 } from "@/components/ui/empty"
 import { DynamicIcon } from "lucide-react/dynamic";
 import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+import { useDebounce } from "@uidotdev/usehooks";
+import { Note } from "@/lib/tauri";
+import { Textarea } from "../ui/textarea";
 
 
 
@@ -24,18 +28,29 @@ const TextEditor = dynamic(() => import('./editor'), {
 
 const EditorClient = () => {
   const { selectedNoteId, editNote, notes, addNote } = useNoteStore();
+  const [title, setTitle] = useState<string | undefined>(undefined);
+  const debouceTitle = useDebounce(title, 500)
 
   const selectedNote = notes.find(item => item.id === selectedNoteId)
 
-  const handleContentChange = (newValue: string) => {
+  
+  const handleContentChange = (field: string, newValue: string) => {
     // console.log("New Value: ", newValue);
-    try {      
+    try {
       if(!selectedNoteId) return alert("Note ID not found!")
-      editNote(
-        selectedNoteId as number, 
-        selectedNote?.title,
-        newValue
-      )      
+      if(field === "title") {
+        editNote(      
+          selectedNoteId as number, 
+          newValue,
+          selectedNote?.content
+        )
+      } else if(field === "content") {
+        editNote(      
+          selectedNoteId as number, 
+          selectedNote?.title,
+          newValue,
+        )
+      }
       console.info("--- Note Saved! ---");
     } catch (error) {
       alert("Unable to Save Note, Please try again later.");
@@ -44,6 +59,16 @@ const EditorClient = () => {
   }
 
 
+  useEffect(() => {
+    if(debouceTitle) {
+      handleContentChange("title", debouceTitle)
+    }
+  }, [debouceTitle]);
+
+
+
+
+  // If Empty show this
   if (!selectedNoteId) return <div className="w-full h-full">
     <div className="w-full max-w-7xl mx-auto flex items-center justify-center p-4 min-h-screen h-full">
       <Empty>
@@ -72,14 +97,23 @@ const EditorClient = () => {
   </div>;
   
   return (
-    <div className="flex h-full w-full max-w-6xl overflow-auto px-4  mx-auto py-8">
-      
-      <TextEditor 
-        key={selectedNoteId}
-        defaultValue={selectedNote?.content}
-        onContentChange={handleContentChange} 
-        
-      />
+    <div className="w-full">
+      <div className="w-full h-32 bg-emerald-300" />
+      <div className="flex flex-col gap-4 h-full w-full max-w-6xl overflow-auto px-4  mx-auto py-8">
+        <Textarea 
+          value={title}
+          placeholder="Write your title here"
+          onChange={(e) => setTitle(e.target.value.length > 0 ? e.target.value : "Unititle Note")}
+          className="p-0 h-auto text-3xl! font-bold bg-transparent resize-none min-h-0 placeholder:text-neutral-300"
+          maxLength={150}        
+        />
+        <TextEditor 
+          key={selectedNoteId}
+          defaultValue={selectedNote?.content}
+          onContentChange={(value) => handleContentChange("content", value)} 
+          
+        />
+      </div>
     </div>
   );
 };

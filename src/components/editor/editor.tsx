@@ -105,7 +105,7 @@ export default function TextEditor({ defaultValue, onContentChange }: TextEditor
 
       <EditorContent 
         editor={editor} 
-        className="font-medium text-base text-black/80 leading-tight tracking-wide notes_editor"        
+        className="font-medium text-lg text-black/80 leading-tight tracking-wide notes_editor"        
       />
       <input
           ref={fileInputRef}

@@ -48,7 +48,7 @@ export function NotesSidebar() {
     };
 
     return (
-        <aside className="w-60 bg-neutral-100 h-screen border-r border-border bg-surface py-2 px-2 sticky top-0 left-0 flex flex-col">
+        <aside className="w-72 bg-neutral-100 h-screen border-r border-border bg-surface py-2 px-2 sticky top-0 left-0 flex flex-col">
             
             <Button
                 variant="outline"
