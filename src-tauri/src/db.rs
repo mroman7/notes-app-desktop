@@ -68,14 +68,18 @@ pub fn reset_database(app_handle: &AppHandle) -> Result<(), Box<dyn std::error::
 
 // Main initializer called from your main.rs setup hook
 pub fn init(app_handle: &AppHandle) -> DbState {
-  if let Err(e) = reset_database(app_handle) {
-    eprintln!("Warning: failed to reset database: {}", e);
+  // SIRF development mode mein reset karein
+  #[cfg(debug_assertions)]
+  {
+      if let Err(e) = reset_database(app_handle) {
+        eprintln!("Warning: failed to reset database: {}", e);
+      }
   }
   
   let path = database_path(app_handle);
-  println!("SQLite DB path: {}", path.display());
-  
   let conn = Connection::open(&path).expect("failed to open database");
+  
+  // Schema check karein (agar tables pehle se hain toh kuch nahi karega)
   create_schema(&conn).expect("failed to create schema");
   
   DbState(Mutex::new(conn))
