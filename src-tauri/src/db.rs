@@ -197,3 +197,27 @@ pub fn delete_note(id: i64, state: tauri::State<'_, DbState>) -> Result<(), Stri
     .map_err(|e| e.to_string())?;
   Ok(())
 }
+
+
+#[tauri::command]
+pub fn search_notes(query: String, state: tauri::State<'_, DbState>) -> Result<Vec<Note>, String> {
+    let conn = state.0.lock().map_err(|e| e.to_string())?;
+    
+    // We add '%' around the query to match any string containing the search term
+    let search_pattern = format!("%{}%", query);
+
+    let mut stmt = conn
+        .prepare("SELECT id, title, content, created_at, updated_at 
+                  FROM notes 
+                  WHERE title LIKE ?1 OR content LIKE ?1 
+                  ORDER BY updated_at DESC")
+        .map_err(|e| e.to_string())?;
+
+    let notes = stmt
+        .query_map([search_pattern], |row| row_to_note(row))
+        .map_err(|e| e.to_string())?
+        .collect::<Result<Vec<Note>, _>>()
+        .map_err(|e| e.to_string())?;
+
+    Ok(notes)
+}

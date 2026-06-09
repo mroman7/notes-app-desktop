@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState, useCallback } from "react";
 import dynamic from 'next/dynamic';
-import { useParams } from 'next/navigation';
 import { useNoteStore } from "@/store/note.store";
 import {
   Empty,
@@ -14,9 +13,7 @@ import {
 } from "@/components/ui/empty"
 import { DynamicIcon } from "lucide-react/dynamic";
 import { Button } from "../ui/button";
-import { Input } from "../ui/input";
 import { useDebounce } from "@uidotdev/usehooks";
-import { Note } from "@/lib/tauri";
 import { Textarea } from "../ui/textarea";
 
 
@@ -28,44 +25,47 @@ const TextEditor = dynamic(() => import('./editor'), {
 
 const EditorClient = () => {
   const { selectedNoteId, editNote, notes, addNote } = useNoteStore();
-  const [title, setTitle] = useState<string | undefined>(undefined);
-  const debouceTitle = useDebounce(title, 500)
-
-  const selectedNote = notes.find(item => item.id === selectedNoteId)
-
+  const [title, setTitle] = useState<string>("");
+  const debouncedTitle = useDebounce(title, 500);
   
+  const selectedNote = notes.find((item) => item.id === selectedNoteId);
+
   const handleContentChange = (field: string, newValue: string) => {
-    // console.log("New Value: ", newValue);
     try {
-      if(!selectedNoteId) return alert("Note ID not found!")
-      if(field === "title") {
-        editNote(      
-          selectedNoteId as number, 
-          newValue,
-          selectedNote?.content
-        )
-      } else if(field === "content") {
-        editNote(      
-          selectedNoteId as number, 
+      if (!selectedNoteId) return alert("Note ID not found!");
+
+      if (field === "title") {
+        editNote(
+          selectedNoteId,
+          newValue.trim() ? newValue : "Untitled Note",
+          selectedNote?.content,
+        );
+      } else if (field === "content") {
+        editNote(
+          selectedNoteId,
           selectedNote?.title,
           newValue,
-        )
+        );
       }
+
       console.info("--- Note Saved! ---");
     } catch (error) {
       alert("Unable to Save Note, Please try again later.");
-      console.error("Error Saving Note: ", error)
+      console.error("Error Saving Note: ", error);
     }
-  }
-
+  };
 
   useEffect(() => {
-    if(debouceTitle) {
-      handleContentChange("title", debouceTitle)
+    if (debouncedTitle) {
+      handleContentChange("title", debouncedTitle);
     }
-  }, [debouceTitle]);
+  }, [debouncedTitle]);
 
-
+  useEffect(() => {
+    if(selectedNote) {
+      setTitle(selectedNote?.title)
+    }
+  }, [selectedNote]);
 
 
   // If Empty show this
@@ -103,7 +103,7 @@ const EditorClient = () => {
         <Textarea 
           value={title}
           placeholder="Write your title here"
-          onChange={(e) => setTitle(e.target.value.length > 0 ? e.target.value : "Unititle Note")}
+          onChange={(e) => setTitle(e.target.value)}
           className="p-0 h-auto text-3xl! font-bold bg-transparent resize-none min-h-0 placeholder:text-neutral-300"
           maxLength={150}        
         />

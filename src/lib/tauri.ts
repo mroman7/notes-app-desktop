@@ -43,3 +43,8 @@ export const updateNote = async (
 export const deleteNote = async (id: number): Promise<void> => {
   return invokeTauri<void>("delete_note", { id });
 };
+
+
+export const searchNotesInDb = async (query: string): Promise<Note[]> => {
+  return invokeTauri<Note[]>("search_notes", { query })
+}

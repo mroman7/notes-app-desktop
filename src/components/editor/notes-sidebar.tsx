@@ -1,13 +1,20 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { DynamicIcon } from "lucide-react/dynamic";
 import Link from "next/link";
 import { useNoteStore } from "@/store/note.store";
 import { cn } from "@/lib/utils";
+import { Input } from "../ui/input";
+import { InputGroup, InputGroupAddon, InputGroupInput } from "../ui/input-group";
+import { useDebounce } from "@uidotdev/usehooks";
 
 export function NotesSidebar() {
+    
+    const [search, setSearch] = useState("")
+    const debounceSearch = useDebounce(search, 300)
+
     // Connect to the Zustand store
     const {
         notes,
@@ -16,13 +23,25 @@ export function NotesSidebar() {
         addNote,
         removeNote,
         setSelectedNoteId,
-        selectedNoteId
+        selectedNoteId,
+        filteredNotes,
+        searchNotes
     } = useNoteStore();
 
     // Initial load
     useEffect(() => {
         fetchNotes();
     }, [fetchNotes]);
+
+
+    // Filter/Search Notes
+    useEffect(() => {
+        if(debounceSearch.length > 2) {
+            searchNotes(debounceSearch)
+        } else {
+            fetchNotes()
+        }
+    }, [debounceSearch]);
 
     const handleDeleteNote = async (e: React.MouseEvent, id: number) => {
         e.preventDefault(); // Prevent navigating to the link when deleting
@@ -50,6 +69,18 @@ export function NotesSidebar() {
     return (
         <aside className="w-72 bg-neutral-100 h-screen border-r border-border bg-surface py-2 px-2 sticky top-0 left-0 flex flex-col">
             
+            <InputGroup className="bg-neutral-200 rounded-full">
+                <InputGroupAddon>
+                    <DynamicIcon name="search" className="size-4" />
+                </InputGroupAddon>
+                <InputGroupInput
+                    placeholder="Search Notes"
+                    className="tracking-wide"  
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                />
+            </InputGroup>
+
             <Button
                 variant="outline"
                 onClick={createNewNote}
@@ -68,12 +99,12 @@ export function NotesSidebar() {
                     </div>
                 )}
 
-                {!isLoading && notes.length === 0 && (
+                {!isLoading && filteredNotes.length === 0 && (
                     <div className="py-4 text-center text-sm text-muted-foreground">No notes</div>
                 )}
 
                 <ul className="w-full">
-                    {!isLoading && notes.map((n) => (
+                    {!isLoading && filteredNotes.map((n) => (
                         <li
                             key={n.id}
                             onClick={() => {
